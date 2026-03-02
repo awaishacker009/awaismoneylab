@@ -1,37 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Admin Panel - AWAIS MONEY LAB</title>
+    <title>Admin - Awais Money Lab</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body style="background: #121212; color: white;">
-    <div class="container">
-        <h1>Admin Control Center</h1>
-        <div class="admin-stats">
-            <div class="card"><h3>Total Revenue</h3><h2 id="totalRevenue">RS 0</h2></div>
-            <div class="card"><h3>Active Users</h3><h2 id="activeUsers">0</h2></div>
-            <div class="card"><h3>Admin Profit (20%)</h3><h2 id="adminProfit">RS 0</h2></div>
-        </div>
-
-        <h3>Withdrawal Requests</h3>
-        <div id="requestList">
-            <p>No pending requests.</p>
-        </div>
-
-        <h3>User Management</h3>
-        <input type="text" id="searchUser" placeholder="Search User by Email">
-        <button onclick="search()">Search</button>
-    </div>
+<body style="background: #000; color: #fff;">
+    <h1>Admin Panel (AWAIS MONEY LAB)</h1>
+    <div id="users-list">Loading users...</div>
 
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <script src="config.js"></script>
     <script>
-        // Security Check
         auth.onAuthStateChanged(user => {
             if(user.email !== "awaismayooo4568@gmail.com") {
-                window.location.href = "index.html";
+                alert("Access Denied!");
+                window.location.href="dashboard.html";
+            } else {
+                db.collection("users").get().then(snapshot => {
+                    let html = "<table border='1'><tr><th>Email</th><th>Points</th><th>Referrer</th></tr>";
+                    snapshot.forEach(doc => {
+                        const d = doc.data();
+                        html += `<tr><td>${d.email}</td><td>${d.points}</td><td>${d.referredBy}</td></tr>`;
+                    });
+                    html += "</table>";
+                    document.getElementById('users-list').innerHTML = html;
+                });
             }
         });
     </script>
