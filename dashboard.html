@@ -2,46 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>User Dashboard - Awais Money Lab</title>
+    <title>Dashboard - Awais Money Lab</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="sidebar">
-        <h2>Dashboard</h2>
-        <ul>
-            <li><i class="fas fa-home"></i> Home</li>
-            <li><i class="fas fa-tasks"></i> Daily Tasks</li>
-            <li><i class="fas fa-wallet"></i> Withdraw</li>
-            <li><i class="fas fa-headset"></i> Help Center</li>
-        </ul>
-    </div>
+    <div class="container">
+        <header>
+            <h2>User Dashboard</h2>
+            <button onclick="auth.signOut().then(()=>window.location.href='index.html')">Logout</button>
+        </header>
 
-    <div class="main-content">
-        <div class="top-bar">
-            <span>Welcome, <b id="userEmail">User</b></span>
-            <button onclick="logout()">Logout</button>
+        <div class="stats-grid">
+            <div class="stat-card"><h3>Points</h3><h2 id="user-points">0</h2></div>
+            <div class="stat-card"><h3>Balance</h3><h2>RS <span id="user-balance">0</span></h2></div>
         </div>
 
-        <div class="stats-container">
-            <div class="card"><h3>Total Points</h3><h2 id="points">0</h2></div>
-            <div class="card"><h3>Current Balance</h3><h2>RS <span id="balance">0.00</span></h2></div>
+        <div class="task-section">
+            <h3>Daily Tasks</h3>
+            <div class="task-item">
+                <p>Watch YouTube Video & Earn 50 Points</p>
+                <button onclick="completeTask('https://youtube.com', 50)">Start Task</button>
+            </div>
         </div>
 
-        <div class="task-grid">
-            <div class="task-card">
-                <h4>YouTube Task #1</h4>
-                <p>Subscribe & Watch for 30 sec</p>
-                <span>Reward: 50 Points</span>
-                <button onclick="startTask('https://youtube.com', 50)">Start Task</button>
-            </div>
-            </div>
+        <div class="referral-box">
+            <h3>Invite Friends (Earn 10% Extra)</h3>
+            <input type="text" id="refLink" readonly>
+            <button onclick="copyRef()">Copy Link</button>
+        </div>
 
-        <section id="help" class="help-center">
-            <h3>Support & Help Center</h3>
-            <p>Email: awaismayooo4568@gmail.com</p>
+        <div class="help-center">
+            <h3>Help Center</h3>
             <p>WhatsApp: +92 329 5533214</p>
-            <a href="https://whatsapp.com/channel/0029VbCVrZhA89MnqofUx70D" class="btn-sub">Official Channel</a>
-        </section>
+            <p>Email: awaismayooo4568@gmail.com</p>
+        </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -49,8 +43,30 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <script src="config.js"></script>
     <script>
-        // Logic for fetching points and balance from Firestore
+        auth.onAuthStateChanged(user => {
+            if(user) {
+                document.getElementById('refLink').value = window.location.origin + "/index.html?ref=" + user.uid;
+                db.collection("users").doc(user.uid).onSnapshot(doc => {
+                    const data = doc.data();
+                    document.getElementById('user-points').innerText = data.points;
+                    document.getElementById('user-balance').innerText = (data.points / 10).toFixed(2);
+                });
+            } else { window.location.href="index.html"; }
+        });
+
+        function completeTask(url, p) {
+            window.open(url, '_blank');
+            db.collection("users").doc(auth.currentUser.uid).update({
+                points: firebase.firestore.FieldValue.increment(p)
+            }).then(() => alert("Task Done! 50 Points Added."));
+        }
+
+        function copyRef() {
+            const copyText = document.getElementById("refLink");
+            copyText.select();
+            document.execCommand("copy");
+            alert("Referral link copied!");
+        }
     </script>
 </body>
-              </html>
-  
+</html>
