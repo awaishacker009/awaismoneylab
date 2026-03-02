@@ -1,19 +1,44 @@
 <!DOCTYPE html>
-<html lang="ur">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Awais Money Lab</title>
+    <title>Awais Money Lab | Start Earning Today</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="auth-container">
-        <h1>Awais Money Lab</h1>
-        <div id="login-form">
-            <input type="email" id="email" placeholder="ای میل">
-            <input type="password" id="password" placeholder="پاس ورڈ">
-            <button onclick="signIn()">لاگ ان کریں</button>
-            <p onclick="toggleForm()">نیا اکاؤنٹ بنائیں</p>
+    <nav class="navbar">
+        <div class="logo">AWAIS MONEY LAB</div>
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#help">Help Center</a>
+            <button class="btn-login" onclick="showAuth()">Login / Register</button>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h1>Turn Your Free Time Into <span class="highlight">Real Cash</span></h1>
+        <p>Join the most trusted micro-tasking platform in Pakistan. Watch videos, complete tasks, and withdraw instantly.</p>
+        <div class="hero-btns">
+            <button class="btn-main" onclick="showAuth()">Get Started Now</button>
+            <a href="https://whatsapp.com/channel/0029VbCVrZhA89MnqofUx70D" class="btn-sub">Join Our Channel</a>
+        </div>
+    </header>
+
+    <section class="features">
+        <div class="feature-card"><i class="fas fa-bolt"></i><h3>Fast Payouts</h3><p>Withdraw your earnings with only 10% service fee.</p></div>
+        <div class="feature-card"><i class="fas fa-users"></i><h3>Referral Bonus</h3><p>Invite friends and earn 20% commission on their tasks.</p></div>
+        <div class="feature-card"><i class="fas fa-shield-alt"></i><h3>Secure System</h3><p>Powered by Firebase & Google security layers.</p></div>
+    </section>
+
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle">Login to Account</h2>
+            <input type="email" id="email" placeholder="Email Address">
+            <input type="password" id="password" placeholder="Password">
+            <button class="btn-block" onclick="handleAuth()">Submit</button>
+            <p id="toggleText" onclick="toggleAuth()">Don't have an account? Register</p>
         </div>
     </div>
 
@@ -21,16 +46,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <script src="config.js"></script>
-    <script>
-        function signIn() {
-            const email = document.getElementById('email').value;
-            const pass = document.getElementById('password').value;
-            auth.signInWithEmailAndPassword(email, pass)
-                .then(() => window.location.href = "dashboard.html")
-                .catch(err => alert(err.message));
-        }
-        // سائن اپ کا فنکشن بھی یہاں ایڈ ہوگا
-    </script>
+    <script src="auth.js"></script>
 </body>
-  </html>
-  
+    </html>
+                                                                                        
