@@ -3,42 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Awais Money Lab | Start Earning Today</title>
+    <title>Awais Money Lab | Earn Real Cash</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="logo">AWAIS MONEY LAB</div>
-        <div class="nav-links">
-            <a href="#about">About</a>
-            <a href="#help">Help Center</a>
-            <button class="btn-login" onclick="showAuth()">Login / Register</button>
+    <div class="hero">
+        <h1>AWAIS MONEY LAB</h1>
+        <p>The Most Trusted Earning Platform in Pakistan</p>
+        <div class="auth-card">
+            <h2 id="auth-title">Login / Register</h2>
+            <input type="email" id="email" placeholder="Enter Email">
+            <input type="password" id="password" placeholder="Enter Password">
+            <button onclick="handleAuth()" class="btn-main">Get Started</button>
         </div>
-    </nav>
-
-    <header class="hero">
-        <h1>Turn Your Free Time Into <span class="highlight">Real Cash</span></h1>
-        <p>Join the most trusted micro-tasking platform in Pakistan. Watch videos, complete tasks, and withdraw instantly.</p>
-        <div class="hero-btns">
-            <button class="btn-main" onclick="showAuth()">Get Started Now</button>
-            <a href="https://whatsapp.com/channel/0029VbCVrZhA89MnqofUx70D" class="btn-sub">Join Our Channel</a>
-        </div>
-    </header>
-
-    <section class="features">
-        <div class="feature-card"><i class="fas fa-bolt"></i><h3>Fast Payouts</h3><p>Withdraw your earnings with only 10% service fee.</p></div>
-        <div class="feature-card"><i class="fas fa-users"></i><h3>Referral Bonus</h3><p>Invite friends and earn 20% commission on their tasks.</p></div>
-        <div class="feature-card"><i class="fas fa-shield-alt"></i><h3>Secure System</h3><p>Powered by Firebase & Google security layers.</p></div>
-    </section>
-
-    <div id="authModal" class="modal">
-        <div class="modal-content">
-            <h2 id="modalTitle">Login to Account</h2>
-            <input type="email" id="email" placeholder="Email Address">
-            <input type="password" id="password" placeholder="Password">
-            <button class="btn-block" onclick="handleAuth()">Submit</button>
-            <p id="toggleText" onclick="toggleAuth()">Don't have an account? Register</p>
+        <div class="info-links">
+            <a href="https://whatsapp.com/channel/0029VbCVrZhA89MnqofUx70D">Join WhatsApp Channel</a>
         </div>
     </div>
 
@@ -46,7 +25,30 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <script src="config.js"></script>
-    <script src="auth.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const refId = urlParams.get('ref');
+        if(refId) localStorage.setItem('referredBy', refId);
+
+        function handleAuth() {
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('password').value;
+            if(!email || !pass) return alert("Please fill all fields");
+
+            auth.signInWithEmailAndPassword(email, pass)
+            .then(() => window.location.href="dashboard.html")
+            .catch(() => {
+                auth.createUserWithEmailAndPassword(email, pass)
+                .then((res) => {
+                    db.collection("users").doc(res.user.uid).set({
+                        email: email,
+                        points: 100, // Welcome Bonus
+                        referredBy: localStorage.getItem('referredBy') || "Direct",
+                        wallet: 0
+                    }).then(() => window.location.href="dashboard.html");
+                }).catch(err => alert(err.message));
+            });
+        }
+    </script>
 </body>
-    </html>
-                                                                                        
+</html>
