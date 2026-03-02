@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Dashboard - Awais Money Lab</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Dashboard</h2>
+        <ul>
+            <li><i class="fas fa-home"></i> Home</li>
+            <li><i class="fas fa-tasks"></i> Daily Tasks</li>
+            <li><i class="fas fa-wallet"></i> Withdraw</li>
+            <li><i class="fas fa-headset"></i> Help Center</li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="top-bar">
+            <span>Welcome, <b id="userEmail">User</b></span>
+            <button onclick="logout()">Logout</button>
+        </div>
+
+        <div class="stats-container">
+            <div class="card"><h3>Total Points</h3><h2 id="points">0</h2></div>
+            <div class="card"><h3>Current Balance</h3><h2>RS <span id="balance">0.00</span></h2></div>
+        </div>
+
+        <div class="task-grid">
+            <div class="task-card">
+                <h4>YouTube Task #1</h4>
+                <p>Subscribe & Watch for 30 sec</p>
+                <span>Reward: 50 Points</span>
+                <button onclick="startTask('https://youtube.com', 50)">Start Task</button>
+            </div>
+            </div>
+
+        <section id="help" class="help-center">
+            <h3>Support & Help Center</h3>
+            <p>Email: awaismayooo4568@gmail.com</p>
+            <p>WhatsApp: +92 329 5533214</p>
+            <a href="https://whatsapp.com/channel/0029VbCVrZhA89MnqofUx70D" class="btn-sub">Official Channel</a>
+        </section>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="config.js"></script>
+    <script>
+        // Logic for fetching points and balance from Firestore
+    </script>
+</body>
+              </html>
+  
